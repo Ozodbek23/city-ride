@@ -1,7 +1,7 @@
 from django.db import models
 
 from apps.core.models import TimeStampedModel
-from apps.users.models import Users
+from apps.users.models import User
 
 
 class CarModels(TimeStampedModel):
@@ -17,7 +17,7 @@ class CarModels(TimeStampedModel):
 
 
 class Drivers(TimeStampedModel):
-    user = models.OneToOneField(Users, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     car_model = models.ForeignKey(CarModels, related_name='cars_models', on_delete=models.PROTECT)
     car_number = models.CharField(max_length=8)
     car_photo = models.ImageField(upload_to='cars_photos/')
