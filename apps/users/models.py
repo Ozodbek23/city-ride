@@ -2,7 +2,7 @@ from django.apps import apps
 from django.contrib import auth
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import PermissionsMixin, Group
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -75,7 +75,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     phone_number = models.IntegerField(validators=[phone_validator], unique=True)
     password = models.CharField(max_length=255)
     role = models.CharField(max_length=50, choices=UsersRoleChoices.choices, default=UsersRoleChoices.CLIENT)
-    # groups = models.ManyToManyField(Group, null=True)
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
@@ -101,3 +100,17 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     def __str__(self):
         return f'{self.full_name}'
+
+
+class SMS(TimeStampedModel):
+    code = models.IntegerField()
+    expire_date = models.DateTimeField()
+    phone_number = models.IntegerField()
+    is_verified = models.BooleanField()  # todo
+
+    class Meta:
+        verbose_name = 'SMS'
+        verbose_name_plural = 'SMS'
+
+    def __str__(self):
+        return f'{self.code}'
