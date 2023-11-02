@@ -73,7 +73,6 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     full_name = models.CharField(_("full name"), max_length=150, blank=True)
     phone_number = models.IntegerField(validators=[phone_validator], unique=True)
-    password = models.CharField(max_length=255)
     role = models.CharField(max_length=50, choices=UsersRoleChoices.choices, default=UsersRoleChoices.CLIENT)
     is_staff = models.BooleanField(
         _("staff status"),
@@ -90,7 +89,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     )
 
     USERNAME_FIELD = "phone_number"
-    REQUIRED_FIELDS = ['password']
 
     objects = UserManager()
 
