@@ -156,4 +156,5 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
+
 AUTH_USER_MODEL = 'users.User'
