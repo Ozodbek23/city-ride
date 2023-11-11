@@ -21,6 +21,7 @@ class Drivers(TimeStampedModel):
     car_model = models.ForeignKey(CarModels, related_name='cars_models', on_delete=models.PROTECT)
     car_number = models.CharField(max_length=8)
     car_photo = models.ImageField(upload_to='cars_photos/')
+    is_accepted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Driver'
