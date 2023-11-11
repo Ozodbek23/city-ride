@@ -4,6 +4,7 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import TimeStampedModel
@@ -73,6 +74,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     full_name = models.CharField(_("full name"), max_length=150, blank=True)
     phone_number = models.IntegerField(validators=[phone_validator], unique=True)
+    password = models.CharField(max_length=255)
     role = models.CharField(max_length=50, choices=UsersRoleChoices.choices, default=UsersRoleChoices.CLIENT)
     is_staff = models.BooleanField(
         _("staff status"),
@@ -87,8 +89,10 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
             "Unselect this instead of deleting accounts."
         ),
     )
+    is_verified = models.BooleanField(_('verified'), default=False)
 
     USERNAME_FIELD = "phone_number"
+    REQUIRED_FIELDS = ['password']
 
     objects = UserManager()
 
@@ -101,10 +105,10 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
 
 class SMS(TimeStampedModel):
-    code = models.IntegerField()
-    expire_date = models.DateTimeField()
     phone_number = models.IntegerField()
-    is_verified = models.BooleanField()  # todo
+    code = models.IntegerField()
+    expires_at = models.DateTimeField(default=timezone.now() + timezone.timedelta(minutes=6))
+    is_used = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'SMS'

@@ -5,18 +5,20 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from apps.users.models import User
-from apps.users.serializers import UsersSerializers, UserCreateSerializer
+from apps.users.serializers import UsersSerializer, UserCreateSerializer, UsersDetailSerializer
 
 
 class UsersViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet,
                    mixins.DestroyModelMixin):
     queryset = User.objects.all()
-    serializer_class = UsersSerializers
-    permission_classes = [IsAuthenticated]
+    serializer_class = UsersSerializer
+    # permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == 'create':
             return UserCreateSerializer
+        elif self.action == 'retrieve':
+            return UsersDetailSerializer
         return self.serializer_class
 
 
