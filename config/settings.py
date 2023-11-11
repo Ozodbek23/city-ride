@@ -45,7 +45,8 @@ THIRD_PARTY_APPS = [
 PROJECT_APPS = [
     'apps.core',
     'apps.drivers',
-    'apps.users'
+    'apps.users',
+    'apps.orders',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
@@ -154,7 +155,15 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API endpoints for City Ride Project',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True
 }
 
-
 AUTH_USER_MODEL = 'users.User'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "127.0.0.1:11211",
+    }
+}
+
