@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import TimeStampedModel
 from apps.users.choices import UsersRoleChoices
-from apps.users.validators import phone_validator
+from apps.users.validators import phone_validator, activation_code_validator
 
 
 class UserManager(BaseUserManager):
@@ -106,7 +106,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
 class SMS(TimeStampedModel):
     phone_number = models.IntegerField()
-    code = models.IntegerField()
+    code = models.IntegerField(validators=[activation_code_validator])
     expires_at = models.DateTimeField(default=timezone.now() + timezone.timedelta(minutes=6))
     is_used = models.BooleanField(default=False)
 
@@ -116,3 +116,7 @@ class SMS(TimeStampedModel):
 
     def __str__(self):
         return f'{self.code}'
+
+    @property
+    def expired(self):
+        return self.expires_at < timezone.now()
