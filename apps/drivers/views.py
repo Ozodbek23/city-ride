@@ -1,8 +1,6 @@
-import json
-
 from rest_framework import mixins
-from rest_framework.parsers import MultiPartParser, FileUploadParser, JSONParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import GenericViewSet
 
 from apps.drivers.models import Drivers, CarModels
@@ -20,6 +18,11 @@ class DriversViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.
         if self.action == 'create':
             return DriverCreateSerializer
         return self.serializer_class
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return self.permission_classes
 
 
 class CarModelViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet,
