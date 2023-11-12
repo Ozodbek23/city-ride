@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from apps.drivers.models import Drivers, CarModels
+from apps.users.choices import UsersRoleChoices
 from apps.users.models import User, SMS
 from apps.users.services import send_sms
 
@@ -39,6 +40,7 @@ class DriverCreateSerializer(serializers.ModelSerializer):
         send_sms(phone_number, code)
         SMS.objects.create(phone_number=phone_number, code=code)
         validated_data['password'] = make_password(validated_data['password'])
+        validated_data['role'] = UsersRoleChoices.DRIVER.value
         car_model = validated_data.pop('car_model')
         car_photo = validated_data.pop('car_photo')
         car_number = validated_data.pop('car_number')
