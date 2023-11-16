@@ -105,7 +105,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
 
 class SMS(TimeStampedModel):
-    phone_number = models.IntegerField()
+    phone_number = models.IntegerField(validators=[phone_validator])
     code = models.IntegerField(validators=[activation_code_validator])
     expires_at = models.DateTimeField(default=timezone.now() + timezone.timedelta(minutes=6))
     is_used = models.BooleanField(default=False)
