@@ -41,9 +41,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         phone_number = validated_data['phone_number']
-        code = randint(111111, 999999)
-        send_sms(phone_number, code)
-        SMS.objects.create(phone_number=phone_number, code=code)
+        send_sms(phone_number)
         validated_data['password'] = make_password(validated_data['password'])
         validated_data['role'] = UsersRoleChoices.CLIENT.value
         instance = User.objects.create(**validated_data)
@@ -69,4 +67,10 @@ class VerifyUsersSerializer(serializers.Serializer):
 
 
 class ResetPasswordSerializer(serializers.Serializer):
-    new_password = serializers.CharField()  # todo
+    phone_number = serializers.IntegerField(validators=[phone_validator])
+
+
+class ConfirmResetPasswordSerializer(serializers.Serializer):
+    phone_number = serializers.IntegerField(validators=[phone_validator])
+    code = serializers.IntegerField(validators=[activation_code_validator], write_only=True)
+    new_password = serializers.CharField(max_length=255)
