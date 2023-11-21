@@ -6,7 +6,7 @@ from apps.users.models import User
 
 
 class DriverOrders(TimeStampedModel):
-    driver = models.ForeignKey(Drivers, related_name='drivers_order', on_delete=models.CASCADE)
+    driver = models.ForeignKey(User, related_name='drivers_order', on_delete=models.CASCADE)
     fromm = models.CharField(max_length=255)
     to = models.CharField(max_length=255)
     time = models.DateTimeField()
