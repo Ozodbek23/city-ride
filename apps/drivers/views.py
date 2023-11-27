@@ -30,3 +30,4 @@ class CarModelViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins
     queryset = CarModels.objects.all()
     serializer_class = CarModelsSerializers
     permission_classes = [IsAuthenticated]
+
