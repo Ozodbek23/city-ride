@@ -33,7 +33,7 @@ deploy-job:
   variables:
     PROJECT_WORK_DIR: "/home/ubuntu/projects/city-ride"
   before_script:
-    - chmod og=600 $AWS_SECRET_KEY
+    - chmod 600 $AWS_SECRET_KEY
     - apk update && apk add openssh-client
     - ssh -i $AWS_SECRET_KEY -o StrictHostKeyChecking=no $AWS_USER@$AWS_IP_ADDRESS "echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password-stdin"
   script:
