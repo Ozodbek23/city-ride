@@ -17,11 +17,12 @@ def send_sms(phone_number):
     code = randint(111111, 999999)
     client = Client(account_sid, auth_token)
     SMS.objects.create(phone_number=phone_number, code=code)
-    client.messages.create(
-        body=f'You code is: {code}. Do not share it with anyone!',
-        from_=f'{from_number}',
-        to=f'+998{phone_number}'
-    )
+    # client.messages.create(
+    #     body=f'You code is: {code}. Do not share it with anyone!',
+    #     from_=f'{from_number}',
+    #     to=f'+998{phone_number}'
+    # )
+    pass
 
 
 def check_activation_code(phone_number, code):

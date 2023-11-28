@@ -18,19 +18,19 @@ class OrderFilter(BaseFilterBackend):
         return queryset
 
 
-class Order1Filter(FilterSet):
-    # time__date = DateFilter(field_name='time', lookup_expr='date', label='Date (yyyy-mm-dd)')
-    # time__time = TimeFilter(field_name='time', lookup_expr='time', label='Time (hh:mm)')
-
-    class Meta:
-        model = DriverOrders
-        fields = {
-            'fromm': ['exact', 'contains'],
-            'to': ['exact', 'contains'],
-            # 'time__date': ['exact', 'gte', 'lte'],
-            # 'time__time': ['exact', 'gte', 'lte'],
-        }
-
-    # Define custom filters for 'time' field
-    time__date = DateFilter(field_name='time', lookup_expr='date', label='Date (yyyy-mm-dd)')
-    time__time = TimeFilter(field_name='time', lookup_expr='time', label='Time (hh:mm)')
+# class Order1Filter(FilterSet):
+#     # time__date = DateFilter(field_name='time', lookup_expr='date', label='Date (yyyy-mm-dd)')
+#     # time__time = TimeFilter(field_name='time', lookup_expr='time', label='Time (hh:mm)')
+#
+#     class Meta:
+#         model = DriverOrders
+#         fields = {
+#             'fromm': ['exact', 'contains'],
+#             'to': ['exact', 'contains'],
+#             # 'time__date': ['exact', 'gte', 'lte'],
+#             # 'time__time': ['exact', 'gte', 'lte'],
+#         }
+#
+#     # Define custom filters for 'time' field
+#     time__date = DateFilter(field_name='time', lookup_expr='date', label='Date (yyyy-mm-dd)')
+#     time__time = TimeFilter(field_name='time', lookup_expr='time', label='Time (hh:mm)')
