@@ -9,22 +9,33 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+import environ
+
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&=#prp0k+9^l^hnk&#kw7rz**8@)qfb(i9&4fs4#*&^6n^0%7q'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,6 +51,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_spectacular',
+    'django_filters'
 ]
 
 PROJECT_APPS = [
@@ -84,10 +96,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('POSTGRES_DB'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -142,6 +159,9 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100
 }
 
+
+
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=60),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
@@ -166,4 +186,3 @@ CACHES = {
         "LOCATION": "127.0.0.1:11211",
     }
 }
-

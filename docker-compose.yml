@@ -1,0 +1,36 @@
+services:
+
+  city_ride-db:
+    container_name: city_ride_db
+    image: postgres
+    ports:
+      - '5433:5432'
+    env_file:
+      .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nginx_network
+
+  city_ride:
+    image: registry.gitlab.com/nomonovjahongirbek/city-ride/develop:web
+    build: ./
+    container_name: city_ride_app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/usr/src/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - city_ride-db
+    networks:
+      - nginx_network
+
+volumes:
+  postgres_data:
+
+networks:
+  nginx_network:
+    external: true
