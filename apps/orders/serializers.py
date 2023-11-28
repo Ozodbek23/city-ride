@@ -58,19 +58,19 @@ class ClientOrdersCreateSerializers(serializers.ModelSerializer):
         return instance
 
 
-class ClientOrdersAcceptSerializers(serializers.ModelSerializer):
+class ClientOrdersAcceptSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientOrder
         fields = ['is_accepted']
 
     def validate(self, attrs):
         driver_order = self.instance.driver_order
-        if driver_order.client_order.count() >= driver_order.seats:
+        if driver_order.client_driver_order.count() == driver_order.seats:
             raise ValidationError("There are no empty seats in your car!")
         return attrs
 
-    def update(self, instance, validated_data):
-        driver_order = instance.driver_order
-        driver_order.seats += 1
-        driver_order.save()
-        return super().update(instance, validated_data)
+    # def update(self, instance, validated_data):
+    #     driver_order = instance.driver_order
+    #     driver_order.seats -= 1
+    #     driver_order.save()
+    #     return super().update(instance, validated_data)
