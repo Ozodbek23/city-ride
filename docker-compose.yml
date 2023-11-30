@@ -10,7 +10,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - cnginx_network
+      - nginx_network
 
   city_ride:
     image: registry.gitlab.com/nomonovjahongirbek/city-ride/develop:web
@@ -26,11 +26,11 @@ services:
     depends_on:
       - city_ride-db
     networks:
-      - cnginx_network
+      - nginx_network
 
 volumes:
   postgres_data:
 
 networks:
-  cnginx_network:
+  nginx_network:
     external: true
